@@ -22,9 +22,21 @@ p = zeros(size(X, 1), 1);
 %
 
 
+%add column of ones to the matrix
+X = [ones(m, 1) X];
 
+%loop through each prediction, X is the pixel vector of each image (each feature)
+for j=1:m,
 
+	%first layer is the sigmoid of the hypothesis, loop through each feature
+	z2 = sigmoid(X(j,:) * Theta1');
 
+	%second layer is just adding a bias to the results vector of the first layer
+	z2 = [1 z2];
+
+	%hidden layer = same thing as first layer but using second layer theta and the results of the first layer
+	[trash,p(j)] = max(sigmoid(z2 * Theta2'));
+end;
 
 
 

@@ -30,9 +30,9 @@ X = [ones(m, 1) X];
 %       for each row.
 %       
 
-
-
-
+all_preds = all_theta * X';
+[trash, maxes] = max(all_preds);
+p = maxes';
 
 
 

@@ -38,7 +38,22 @@ grad = zeros(size(theta));
 
 
 
+predictions =  sigmoid(X*theta);
 
+leftPart = -y' * log(predictions);
+
+rightPart = (1 - y') * log(1 - predictions);
+
+theta2 = theta;
+
+theta2(1) = 0;
+
+lambdaCost = (lambda / (2*m)) * sum(theta2 .^ 2);
+lambdaGrad = lambda / m * theta2;
+
+J = ((1 / m) * (leftPart - rightPart)) + lambdaCost;
+
+grad = ((1 / m) * (X' * (predictions - y)))  + lambdaGrad;
 
 
 
