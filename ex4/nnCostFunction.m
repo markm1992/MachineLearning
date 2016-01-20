@@ -63,19 +63,88 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 
+%Create the y matrix by mapping the digit to the spot where a 1 is marked in the vector
 
 
 
 
+yArray = zeros(num_labels, m); 
+for i=1:m,
+  yArray(y(i),i)=1;
+end
+
+%Add the bias to X
+X = [ones(m,1) X];
+
+%a1 is just x
+%a2 is the sigmoid of theta 1 times a1
+a2 = sigmoid(Theta1 * X');
+
+%Add ones to a2
+a2 = [ones(m,1) a2'];
+
+%Hypothesis is the sigmoid of theta 2 and a2
+hyp = sigmoid(Theta2 * a2');
+
+% Cost function equations inner sum
+sum1 = sum(-yArray .* log(hyp) - (1-yArray) .* log(1-hyp));
+%cost function for outer sum
+J = (1/m) * sum(sum1);
+
+
+%Don't regularize the bias
+%Sets the first column of each theta to 0 in a temp value so that it doesn't change the costs
+t1 = Theta1;
+t1(:,1) = 0;
+t2 = Theta2;
+t2(:,1) = 0;
+
+% J + regularization formula
+J = J + ((lambda/(2*m)) * (sum(sum(t1.^2)) + sum(sum(t2.^2))));
 
 
 
 
+%Back propagation
 
 
-
-
-
+for t=1:m,
+	
+	%There is already bias added to X during the forward prop step instead of adding it to a1 twice
+	a1 = X(t,:);
+	%We now need the z terms so can't combine it here
+	z2 = Theta1 * a1';
+	a2 = sigmoid(z2);
+	%a1 is just a vector so we need to add a 1 at the beginning
+	a2 = [1 ; a2];
+	z3 = Theta2 * a2;
+	a3 = sigmoid(z3);
+	
+	%add bias for z2 (It's just a vector so just add 1
+	z2 = [1; z2];
+	
+	%compute delta3 based off of a3 and the y array at column t, corresponding to training data m
+	delta3 = a3-yArray(:,t);
+	
+	%compute delta 2 by using theta2, delta3, and z2
+	delta2 = (Theta2' * delta3) .* sigmoidGradient(z2);
+	
+	%remove the bias layer in the delta
+	delta2 = delta2(2:end);
+	
+	%accumulate the gradient of thetaX by delta(X+1) and aX
+	Theta2_grad = Theta2_grad + delta3 * a2';
+	Theta1_grad = Theta1_grad + delta2 * a1;
+	
+end
+	
+	%unregularized gradient on J = 0
+	Theta1_grad(:, 1) = (1/m) .* Theta1_grad(:, 1);
+	Theta2_grad(:, 1) = (1/m) .* Theta2_grad(:, 1);
+	
+	%Regularized gradient on J != 0
+	Theta1_grad(:, 2:end) = (1/m) .* Theta1_grad(:, 2:end) + ((lambda/m) * Theta1(:, 2:end));
+	Theta2_grad(:, 2:end) = (1/m) .* Theta2_grad(:, 2:end) + ((lambda/m) * Theta2(:, 2:end));
 
 
 
