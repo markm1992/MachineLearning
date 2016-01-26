@@ -53,10 +53,23 @@ error_val   = zeros(m, 1);
 
 % ---------------------- Sample Solution ----------------------
 
-
-
-
-
+%loop through all elements
+for i = 1:m
+	%Get the training set of X
+	Xtrain = X(1:i,:);
+	%Get the training set of y
+	ytrain = y(1:i);
+	%Theta = linear regression on the training set to find the theta parameters
+	theta = trainLinearReg(Xtrain, ytrain, lambda);
+	%Compute the cost of each element and the gradient on the training set, lambda as 0
+	[Jtrain,grad_train]=linearRegCostFunction(Xtrain,ytrain,theta,0); 
+	%Compute the cost of entire cross validation set, lambda as 0
+	[Jval,grad_val]=linearRegCostFunction(Xval,yval,theta,0);
+	%Cost of the error of training example i
+	error_train(i) = Jtrain;  
+	%cost of the error of validation example i
+	error_val(i) = Jval;
+end;
 
 
 % -------------------------------------------------------------

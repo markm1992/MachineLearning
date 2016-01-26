@@ -20,13 +20,22 @@ grad = zeros(size(theta));
 %
 
 
+%regularization parameter
+regTerm = (lambda/(2*m)) * (theta.^2);
+%Set the bias to equal 0
+regTerm(1,:) = 0;
+%Compute the cost
+J = (1 / (2 * m)) * sum((X * theta - y)' * (X * theta - y)) + sum(regTerm);
 
+%The gradient regularization parameter
+regTermGrad = (lambda/m)*theta;
+%Set the bias to 0
+regTermGrad(1,:) = 0;
 
-
-
-
-
-
+%Compute the gradient
+grad = (1/m)*X' * (X*theta - y);
+%Add the regularization
+grad = grad + regTermGrad;
 
 
 

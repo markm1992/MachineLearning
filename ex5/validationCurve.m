@@ -39,12 +39,23 @@ error_val = zeros(length(lambda_vec), 1);
 %
 %
 
+%loop over lambda vec
+for i = 1:length(lambda_vec)
 
+    lambda = lambda_vec(i);
+    
+	%get the theta val
+	theta = trainLinearReg(X, y, lambda);	
 
+	%Compute train/cross validation errors using training examples
+	[Jtrain,grad_train]=linearRegCostFunction(X,y,theta,0); 
+	[Jval,grad_val]=linearRegCostFunction(Xval,yval,theta,0);
 
-
-
-
+	%store the results
+	error_train(i) = Jtrain;  
+	error_val(i) = Jval;
+	
+end;
 
 
 

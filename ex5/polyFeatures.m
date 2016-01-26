@@ -15,8 +15,10 @@ X_poly = zeros(numel(X), p);
 %
 % 
 
-
-
+%Just create the polynomial features by taking x to the factor of i on a per column basis
+for i=1:p
+	X_poly(:, i) = X(:,1).^i;
+end
 
 
 
