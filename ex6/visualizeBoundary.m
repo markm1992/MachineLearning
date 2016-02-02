@@ -18,7 +18,8 @@ end
 
 % Plot the SVM boundary
 hold on
-contour(X1, X2, vals, [0 0], 'Color', 'b');
+colormap ('default');
+contour(X1, X2, vals, [0 0], 'Color');
 hold off;
 
 end

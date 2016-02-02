@@ -24,7 +24,42 @@ sigma = 0.3;
 %
 
 
+%Test values as recommended in lectures
+testValues = [0.01, 0.03, 0.1, 0.3,  1, 3, 10, 30];
 
+results = [];
+
+%Test c values
+for loopC=1:length(testValues),
+	%Test sigma values
+    for loopSigma=1:length(testValues),
+      
+      %Test C
+      testC = testValues(loopC);
+	  %Test Sigma
+      testSigma = testValues(loopSigma);
+      
+	  %Train the model with the same training as in ex6 but with different Sigmas and C's
+      model= svmTrain(X, y, testC, @(x1, x2) gaussianKernel(x1, x2, testSigma)); 
+	  %Use the svm to make predictions
+      predictions = svmPredict(model, Xval);
+      
+	  %What is the test error? As listed above for computing the prediction error
+      testError = mean(double(predictions ~= yval));
+      
+      results = [results; testC, testSigma, testError];
+      
+    end
+end
+
+%Get the index of the min in regards to the least error
+[minError, minIndex] = min(results(:,3));
+
+
+%Most optimal C
+C = results(minIndex,1);
+%Most optimal Sigma
+sigma = results(minIndex,2);
 
 
 

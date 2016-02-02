@@ -48,6 +48,8 @@ x = zeros(n, 1);
 %
 %
 
+%Just set each word index to equal 1
+x(word_indices)=1;
 
 
 

@@ -98,8 +98,15 @@ while ~isempty(email_contents)
     %
 
 
-
-
+	%Loop through the vocab list
+	for i = 1:length(vocabList)
+		%If the string is there
+        if strcmp(vocabList{i}, str)
+			%Set the index to the proper one
+            word_indices = [word_indices; i];
+            break;
+        end
+    end
 
 
 
